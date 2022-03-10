@@ -7,6 +7,7 @@ import br.com.rodrigobraz.TestApi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,5 +21,9 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> possibleUser = repository.findById(id);
         return possibleUser.orElseThrow(() -> new ObjectNotFoundException("User not found"));
+    }
+
+    public List<User> findAll() {
+        return repository.findAll();
     }
 }
