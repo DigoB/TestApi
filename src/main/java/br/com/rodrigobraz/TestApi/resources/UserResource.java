@@ -1,5 +1,6 @@
 package br.com.rodrigobraz.TestApi.resources;
 
+import br.com.rodrigobraz.TestApi.domain.User;
 import br.com.rodrigobraz.TestApi.domain.dto.UserDTO;
 import br.com.rodrigobraz.TestApi.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -39,5 +40,13 @@ public class UserResource {
 
         return ResponseEntity.created(
                 uriBuilder.path("/users/{id}").buildAndExpand(service.create(dto).getId()).toUri()).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO dto) {
+
+        dto.setId(id);
+        User newUser = service.update(dto);
+        return ResponseEntity.ok().body(mapper.map(newUser, UserDTO.class));
     }
 }
