@@ -1,7 +1,8 @@
 package br.com.rodrigobraz.TestApi.resources;
 
-import br.com.rodrigobraz.TestApi.domain.User;
+import br.com.rodrigobraz.TestApi.domain.dto.UserDTO;
 import br.com.rodrigobraz.TestApi.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,12 @@ public class UserResource {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private ModelMapper mapper;
+
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Integer id) {
+    public ResponseEntity<UserDTO> findById(@PathVariable Integer id) {
 
-
-        return ResponseEntity.ok().body(service.findById(id));
+        return ResponseEntity.ok().body(mapper.map(service.findById(id), UserDTO.class));
     }
 }
