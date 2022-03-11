@@ -3,6 +3,7 @@ package br.com.rodrigobraz.TestApi.services.impl;
 import br.com.rodrigobraz.TestApi.domain.User;
 import br.com.rodrigobraz.TestApi.domain.dto.UserDTO;
 import br.com.rodrigobraz.TestApi.repositories.UserRepository;
+import br.com.rodrigobraz.TestApi.services.exceptions.DataIntegrityViolationException;
 import br.com.rodrigobraz.TestApi.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,9 +25,9 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class UserServiceImplTest {
 
-    public static final int ID          = 1;
-    public static final String NAME     = "Rodrigo";
-    public static final String EMAIL    = "rodrigo@email.com";
+    public static final int ID = 1;
+    public static final String NAME = "Rodrigo";
+    public static final String EMAIL = "rodrigo@email.com";
     public static final String PASSWORD = "123";
     public static final String USER_NOT_FOUND = "User not found";
     public static final int INDEX = 0;
@@ -109,6 +110,19 @@ class UserServiceImplTest {
         assertEquals(EMAIL, response.getEmail());
         assertEquals(PASSWORD, response.getPassword());
 
+    }
+
+    @Test
+    void whenCreateThenReturnAnDataIntegrityViolationException() {
+        when(repository.findByEmail(Mockito.anyString())).thenReturn(optionalUser);
+
+        try {
+            optionalUser.get().setId(2);
+            service.create(userDTO);
+        } catch (Exception ex) {
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
+            assertEquals("Email already registered", ex.getMessage());
+        }
     }
 
     @Test
