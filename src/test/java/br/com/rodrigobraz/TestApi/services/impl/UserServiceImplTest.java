@@ -3,6 +3,7 @@ package br.com.rodrigobraz.TestApi.services.impl;
 import br.com.rodrigobraz.TestApi.domain.User;
 import br.com.rodrigobraz.TestApi.domain.dto.UserDTO;
 import br.com.rodrigobraz.TestApi.repositories.UserRepository;
+import br.com.rodrigobraz.TestApi.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -61,6 +62,18 @@ class UserServiceImplTest {
         assertEquals(ID, response.getId());
         assertEquals(NAME, response.getName());
         assertEquals(EMAIL, response.getEmail());
+    }
+
+    @Test
+    void whenFindByIdThenReturnObjectNotFoundException() {
+
+        when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException("User not found"));
+        try {
+            service.findById(ID);
+        } catch (Exception ex) {
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals("User not found", ex.getMessage());
+        }
     }
 
     @Test
