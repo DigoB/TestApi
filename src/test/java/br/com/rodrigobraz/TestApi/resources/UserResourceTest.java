@@ -33,6 +33,7 @@ class UserResourceTest {
     private User user;
     private UserDTO userDTO;
 
+
     @InjectMocks
     private UserResource resource;
 
@@ -82,16 +83,32 @@ class UserResourceTest {
         assertEquals(NAME, response.getBody().get(INDEX).getName());
         assertEquals(EMAIL, response.getBody().get(INDEX).getEmail());
         assertEquals(PASSWORD, response.getBody().get(INDEX).getPassword());
-
-
     }
 
     @Test
-    void create() {
+    void whenCreateThenReturnCreated() {
+        //when(service.create(any())).thenReturn(user);
+
+        //ResponseEntity<UserDTO> response = resource.create(userDTO);
+        //assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        //assertNotNull(response.getHeaders().get("Location"));
     }
 
     @Test
-    void update() {
+    void whenUpdateThenReturnSuccess() {
+        when(service.update(userDTO)).thenReturn(user);
+        when(mapper.map(any(), any())).thenReturn(userDTO);
+
+        ResponseEntity<UserDTO> response = resource.update(ID, userDTO);
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(UserDTO.class, response.getBody().getClass());
+
+        assertEquals(ID, response.getBody().getId());
+        assertEquals(NAME, response.getBody().getName());
+        assertEquals(EMAIL, response.getBody().getEmail());
     }
 
     @Test
