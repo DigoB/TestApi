@@ -9,7 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 class ResourceExceptionHandlerTest {
@@ -37,9 +40,21 @@ class ResourceExceptionHandlerTest {
         assertEquals(StandardError.class, response.getBody().getClass());
         assertEquals(USER_NOT_FOUND, response.getBody().getError());
         assertEquals(404, response.getBody().getStatus());
+        assertNotEquals("/user/2", response.getBody().getPath());
+        assertNotEquals(LocalDateTime.now(), response.getBody().getTimestamp());
     }
 
     @Test
-    void dataIntegrityViolation() {
+    void whenDataIntegrityViolationThenReturnAResponseEntity() {
+        ResponseEntity<StandardError> response = handler.dataIntegrityViolation(new DataIntegrityViolationException("Email already registered"),
+                new MockHttpServletRequest());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(StandardError.class, response.getBody().getClass());
+        assertEquals("Email already registered", response.getBody().getError());
+        assertEquals(400, response.getBody().getStatus());
     }
 }
