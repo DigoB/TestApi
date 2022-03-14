@@ -12,10 +12,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +32,8 @@ class UserResourceTest {
     public static final int INDEX = 0;
     private User user;
     private UserDTO userDTO;
+
+    private UriComponentsBuilder uriBuilder;
 
 
     @InjectMocks
@@ -89,7 +91,7 @@ class UserResourceTest {
     void whenCreateThenReturnCreated() {
         //when(service.create(any())).thenReturn(user);
 
-        //ResponseEntity<UserDTO> response = resource.create(userDTO);
+        //ResponseEntity<UserDTO> response = resource.create(userDTO, uriBuilder);
         //assertEquals(HttpStatus.CREATED, response.getStatusCode());
         //assertNotNull(response.getHeaders().get("Location"));
     }
