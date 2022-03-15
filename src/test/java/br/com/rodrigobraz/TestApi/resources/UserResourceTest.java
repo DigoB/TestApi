@@ -12,8 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,11 +28,8 @@ class UserResourceTest {
     public static final String EMAIL    = "rodrigo@email.com";
     public static final String PASSWORD = "123";
     public static final int INDEX = 0;
-    private User user;
-    private UserDTO userDTO;
-
-    private UriComponentsBuilder uriBuilder;
-
+    private User user = new User();
+    private UserDTO userDTO = new UserDTO();
 
     @InjectMocks
     private UserResource resource;
@@ -91,7 +86,7 @@ class UserResourceTest {
     void whenCreateThenReturnCreated() {
         when(service.create(any())).thenReturn(user);
 
-        ResponseEntity<UserDTO> response = resource.create(userDTO, uriBuilder);
+        ResponseEntity<UserDTO> response = resource.create(userDTO);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getHeaders().get("Location"));
     }

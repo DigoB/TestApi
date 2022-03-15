@@ -6,8 +6,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,14 +37,15 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO dto, UriComponentsBuilder uriBuilder) {
-        return ResponseEntity.created(
-                uriBuilder.path("/users/{id}").buildAndExpand(service.create(dto).getId()).toUri()).build();
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO dto) {
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}").buildAndExpand(service.create(dto).getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(ID)
     public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO dto) {
-        dto.setId(id);
+
         return ResponseEntity.ok().body(mapper.map(service.update(dto), UserDTO.class));
     }
 

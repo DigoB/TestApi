@@ -14,20 +14,13 @@ import java.util.List;
 public class TestConfig {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Bean
     public void startDB() {
-
         User u1 = new User(null, "Rodrigo", "rodrigo@email.com", "123");
-        User u2 = new User(null, "Joao", "joao@email.com", "123");
-        User u3 = new User(null, "Marcos", "marcos@email.com", "123");
-        User u4 = new User(null, "Maria", "maria@email.com", "123");
-        User u5 = new User(null, "Pedro", "pedro@email.com", "123");
-        User u6 = new User(null, "Mateus", "mateus@email.com", "123");
+        User u2 = new User(null, "Pedro", "pedro@mail.com", "123");
 
-        userRepository.saveAll(List.of(u1, u2, u3, u4, u5, u6));
-
+        repository.saveAll(List.of(u1, u2));
     }
-
 }

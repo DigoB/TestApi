@@ -3,11 +3,11 @@ package br.com.rodrigobraz.TestApi.domain.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
     private Integer id;
